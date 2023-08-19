@@ -34,7 +34,6 @@ class Game :
         self.checkRules(str)
         if self.mysteryWord == str:
             print("YOU WIN !")
-            sys.exit(0)
             self.live = 6
             return
         result = ""
@@ -84,6 +83,8 @@ class Game :
                     self.live += 1
                 except Exception as e:
                     print(e)
+        sys.exit(0)
+
 
 if __name__ == '__main__':
     game = Game("bonjour", None)
