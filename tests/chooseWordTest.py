@@ -17,7 +17,7 @@ class TestExtractMethods(unittest.TestCase):
 
 
     def test_wordSelectedAndAvailableList(self):
-        fileList = "./wordReferences.txt"
+        fileList = "./filesReference/wordReferences.txt"
         words = chooseWord.ChooseWords(chooseWord.selectWord(fileList, 512), fileList)
         self.assertEqual(words.chosenWord, "ABOTEAU")
         self.assertEqual(2401, len(words.availableList))

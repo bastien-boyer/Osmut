@@ -1,4 +1,5 @@
 import sys
+from scripts import asciiArt
 
 class Game :
     def __init__(self, mysteryWord, availableList) -> None:
@@ -7,7 +8,19 @@ class Game :
         self.availableWordList = availableList
         self.live = 0
         self.input = None
+        self.color = []
+        self.ascii = asciiArt.AsciiArt()
+        self.wordIndice = self.createWordIndice()
 
+
+    def createWordIndice(self):
+        tmp = ""
+        for i, letter in enumerate(self.mysteryWord):
+            if i == 0:
+                tmp += self.mysteryWord[i]
+            else:
+                tmp += '_'
+        return tmp
 
     def checkRules(self, str):
         if str[0] != self.mysteryWord[0]:
@@ -18,35 +31,29 @@ class Game :
             raise Exception(f"Le mot '{str}' n'est pas dans le dictionnaire")
 
             
-    def badLetter(self, letter):
-        # Blue
-        return "\033[34m" + letter + "\033[0m"
-    
-    def goodLetterButWrongEmplacement(self, letter):
-        # Yellow
-        return "\033[33m" + letter+ "\033[0m"
-    
-    def goodLetterInRightEmplacement(self, letter):
-        # RED
-        return "\033[31m" + letter + "\033[0m"
-
+ 
     def checkLetters(self, str):
-        self.checkRules(str)
-        if self.mysteryWord == str:
-            print("YOU WIN !")
-            self.live = 6
-            return
         result = ""
         self.input = self.setInput(str)
+        self.color = []
         for key, value in self.input.items():
             if value in self.mysteryWordDic:
                 if key in self.mysteryWordDic[value]:
-                    result += self.goodLetterInRightEmplacement(value)
+                    result += value
+                    self.color.append(asciiArt.Color.RED)
                 else:
-                    result += self.goodLetterButWrongEmplacement(value)
+                    result += value
+                    self.color.append(asciiArt.Color.YELLOW)
+
             else:
-                result += self.badLetter(value)
-        return result
+                result += value                
+                self.color.append(asciiArt.Color.BLUE)
+        self.ascii.painting(result, self.color)
+        if self.mysteryWord == str:
+                self.ascii.painting("YOU WIN", None)
+                sys.exit(0)
+
+
 
     def isWin(self, str):
         if self.mysteryWord == str:
@@ -75,19 +82,21 @@ class Game :
 
     def gameLoop(self):
         print(f"{self.mysteryWord}")
+        self.checkLetters(self.wordIndice)
         while self.isGameOver() != True:
             input_text = input(f"Veuillez entrer un mot commençant par la lettre : {self.mysteryWord[0]} et faisant {len(self.mysteryWord)} lettres\n")
             if input_text:
                 try:
-                    print(self.checkLetters(input_text.upper()))
+                    userInput = input_text.upper()                    
+                    self.checkRules(userInput)
+                    self.checkLetters(userInput)
                     self.live += 1
                 except Exception as e:
                     print(e)
+        self.ascii.painting("YOU LOSE", None)
         sys.exit(0)
 
 
 if __name__ == '__main__':
     game = Game("bonjour", None)
     game.gameLoop()
-
-
