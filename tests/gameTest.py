@@ -10,22 +10,26 @@ import unittest
 
 
 class TestGameMethods(unittest.TestCase):
+    wordList = "./wordReference.txt"
 
     def test_wordStartsWithRightLetter(self):
-        gameTest = game.Game("azerty", None)
+        gameTest = game.Game("AZERTY", None)
         with self.assertRaises(Exception) as context:
             gameTest.checkLetters("ytreza")
         self.assertTrue("Le mot doit obligatoirement commencer par la lettre [A]" in str(context.exception))
 
     def test_wordSize(self):
-        gameTest = game.Game("bonjour", None)
+        gameTest = game.Game("BONJOUR", None)
         with self.assertRaises(Exception) as context:
-             gameTest.checkLetters("bonj")
-        print("=>", context.exception)
+             gameTest.checkLetters("BONJ")
         self.assertTrue(f"Le mot doit obligatoirement comporter [{len(gameTest.mysteryWord)}] lettres" in str(context.exception))
 
     def test_wordInDictionnary(self):
-        return
+        badInput = "bgytfcs"
+        gameTest = game.Game("BONJOUR", self.wordList)
+        with self.assertRaises(Exception) as context:
+             gameTest.checkLetters(badInput.upper())
+        self.assertTrue(f"Le mot '{badInput.upper()}' n'est pas dans le dictionnaire" in str(context.exception))
 
 if __name__ == '__main__':
     unittest.main()
