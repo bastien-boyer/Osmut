@@ -8,7 +8,7 @@ class Game :
         self.availableWordList = availableList
         self.live = 0
         self.input = None
-        self.color = []
+        self.colors = []
         self.ascii = asciiArt.AsciiArt()
         self.wordIndice = self.createWordIndice()
 
@@ -34,27 +34,25 @@ class Game :
  
     def checkLetters(self, str):
         result = ""
-        self.input = self.setInput(str)
-        self.color = []
+        self.input = self.getInputDictionnary(str)
+        self.colors = []
         for key, value in self.input.items():
             if value in self.mysteryWordDic:
                 if key in self.mysteryWordDic[value]:
                     result += value
-                    self.color.append(asciiArt.Color.RED)
+                    self.colors.append(asciiArt.Color.RED)
                 else:
                     result += value
-                    self.color.append(asciiArt.Color.YELLOW)
-
+                    self.colors.append(asciiArt.Color.YELLOW)
             else:
                 result += value                
-                self.color.append(asciiArt.Color.BLUE)
-        self.ascii.painting(result, self.color)
+                self.colors.append(asciiArt.Color.BLUE)
+        self.ascii.painting(result, self.colors)
         if self.mysteryWord == str:
                 self.ascii.painting("YOU WIN", None)
                 sys.exit(0)
 
-
-
+   
     def isWin(self, str):
         if self.mysteryWord == str:
             return True
@@ -65,13 +63,16 @@ class Game :
             return True
         return False
         
-    def setInput(self, str):
+    def getInputDictionnary(self, str):
+        # {'key = index' : 'value = letter'}
         dictionnary = {}
         for index, letter in enumerate(str):
             dictionnary[index] = letter
         return dictionnary
         
+
     def getDictionnary(self, word):
+        # {'key = letter' : 'value = index'}
         dictionnary = {}
         for index, letter in enumerate(word):
             if letter in dictionnary:

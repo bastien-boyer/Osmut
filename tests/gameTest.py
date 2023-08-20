@@ -8,6 +8,7 @@ sys.path.append(scripts_dir)
 import game
 import unittest
 import chooseWord
+from asciiArt import Color
 
 FILE_LIST = "./filesReference/wordReferences.txt"
 
@@ -32,6 +33,35 @@ class TestGameMethods(unittest.TestCase):
         with self.assertRaises(Exception) as context:
              gameTest.checkRules(badInput.upper())
         self.assertTrue(f"Le mot '{badInput.upper()}' n'est pas dans le dictionnaire" in str(context.exception))
+
+    def test_letterAtWrongPosition(self):
+        availableList = ('TASK', 'TKAS' ,'TSAA','KAAS')
+        gameTest = game.Game("TASK", availableList)
+
+        gameTest.checkLetters('TKAS')
+        expectedColors = [Color.RED, Color.YELLOW, Color.YELLOW, Color.YELLOW]
+        self.assertTrue(compareEnumList(expectedColors, gameTest.colors))
+        
+        gameTest.checkLetters('KAAS')
+        expectedColors = [Color.YELLOW, Color.RED, Color.BLUE, Color.YELLOW]
+        self.assertTrue(compareEnumList(expectedColors, gameTest.colors))
+       
+        gameTest.checkLetters('TSAA')
+        expectedColors = [Color.RED, Color.YELLOW, Color.YELLOW, Color.BLUE]
+        self.assertTrue(compareEnumList(expectedColors, gameTest.colors))
+
+def compareEnumList(list1, list2):
+    print(f"LIST1 = {list1}")
+    print(f"LIST2 = {list2}")
+
+    if len(list1) != len(list2):
+        return False
+    for i, enumValue1 in enumerate(list1):
+        enumValue2 = list2[i]
+        if enumValue2.value != enumValue1.value:
+            print(f"FALSE => e1  = {enumValue1}    e2 = {enumValue2}")
+            return False
+    return True
 
 if __name__ == '__main__':
     unittest.main()
