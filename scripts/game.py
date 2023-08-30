@@ -6,9 +6,10 @@ class Game :
         self.mysteryWord = mysteryWord
         self.mysteryWordDic = self.getDictionnary(mysteryWord)
         self.availableWordList = availableList
+        self.originNumberOccurence = self.getDicNumberOfOccurence(mysteryWord)
         self.live = 0
         self.input = None
-        self.color = []
+        self.colors = []
         self.ascii = asciiArt.AsciiArt()
         self.wordIndice = self.createWordIndice()
 
@@ -30,31 +31,62 @@ class Game :
         if str not in self.availableWordList:
             raise Exception(f"Le mot '{str}' n'est pas dans le dictionnaire")
 
-            
- 
-    def checkLetters(self, str):
-        result = ""
-        self.input = self.setInput(str)
-        self.color = []
-        for key, value in self.input.items():
-            if value in self.mysteryWordDic:
-                if key in self.mysteryWordDic[value]:
-                    result += value
-                    self.color.append(asciiArt.Color.RED)
-                else:
-                    result += value
-                    self.color.append(asciiArt.Color.YELLOW)
-
+    def getDicNumberOfOccurence(self, str):
+        dictionnary = {}
+        for letter in str:
+            if dictionnary.get(letter) != None:
+                dictionnary[letter] += 1
             else:
-                result += value                
-                self.color.append(asciiArt.Color.BLUE)
-        self.ascii.painting(result, self.color)
+                 dictionnary[letter] = 1
+        return dictionnary
+
+
+    def isLetterIsPresent(self, letter):
+        if letter in self.mysteryWord:
+            return True
+        return False
+
+    def isLetterInRightPlace(self, letter, indice):
+        if self.mysteryWord[indice] == letter:
+            return True
+        return False
+    
+    def isDuplicate(self, letter, dictInputOccurence):
+        if self.originNumberOccurence[letter] != dictInputOccurence[letter]:
+            return True
+        return False
+
+
+    def updateOccurenceLeft(self, letter, dictio):
+        dictio[letter] = dictio[letter] -1
+        return dictio
+
+
+    def checkLetters(self, str):
+        self.colors = []
+        dictInputOccurence = self.getDicNumberOfOccurence(str)
+        i = len(str) -1
+        while i >= 0:
+            letter = str[i]
+            if self.isLetterIsPresent(letter):
+                if self.isLetterInRightPlace(letter, i):
+                    self.colors.append(asciiArt.Color.RED)
+                elif self.isDuplicate(letter, dictInputOccurence):
+                    dictInputOccurence = self.updateOccurenceLeft(letter, dictInputOccurence)
+
+                    self.colors.append(asciiArt.Color.BLUE)
+                else:
+                    self.colors.append(asciiArt.Color.YELLOW)
+            else:
+                self.colors.append(asciiArt.Color.BLUE)
+            i -= 1
+        self.colors = self.colors[::-1]
+        self.ascii.painting(str, self.colors)
         if self.mysteryWord == str:
-                self.ascii.painting("YOU WIN", None)
-                sys.exit(0)
+            self.ascii.painting("YOU WIN", None)
+            sys.exit(0)
 
-
-
+   
     def isWin(self, str):
         if self.mysteryWord == str:
             return True
@@ -65,13 +97,18 @@ class Game :
             return True
         return False
         
-    def setInput(self, str):
+    def getInputDictionnary(self, str):
+        # {'key = index' : 'value = letter'}
         dictionnary = {}
         for index, letter in enumerate(str):
             dictionnary[index] = letter
         return dictionnary
         
+
+
+
     def getDictionnary(self, word):
+        # {'key = letter' : 'value = index'}
         dictionnary = {}
         for index, letter in enumerate(word):
             if letter in dictionnary:
@@ -82,6 +119,8 @@ class Game :
 
     def gameLoop(self):
         print(f"{self.mysteryWord}")
+        for l in range(50):
+            print(".")
         self.checkLetters(self.wordIndice)
         while self.isGameOver() != True:
             input_text = input(f"Veuillez entrer un mot commençant par la lettre : {self.mysteryWord[0]} et faisant {len(self.mysteryWord)} lettres\n")
