@@ -35,31 +35,47 @@ class TestGameMethods(unittest.TestCase):
         self.assertTrue(f"Le mot '{badInput.upper()}' n'est pas dans le dictionnaire" in str(context.exception))
 
     def test_letterAtWrongPosition(self):
-        availableList = ('TASK', 'TKAS' ,'TSAA','KAAS')
+        availableList = ('TASK', 'TKAS' ,'TSAA','KAAS', 'AAAA')
         gameTest = game.Game("TASK", availableList)
 
         gameTest.checkLetters('TKAS')
         expectedColors = [Color.RED, Color.YELLOW, Color.YELLOW, Color.YELLOW]
         self.assertTrue(compareEnumList(expectedColors, gameTest.colors))
         
+
+        gameTest = game.Game("TASK", availableList)
         gameTest.checkLetters('KAAS')
         expectedColors = [Color.YELLOW, Color.RED, Color.BLUE, Color.YELLOW]
         self.assertTrue(compareEnumList(expectedColors, gameTest.colors))
        
+
+        gameTest = game.Game("TASK", availableList)
         gameTest.checkLetters('TSAA')
         expectedColors = [Color.RED, Color.YELLOW, Color.YELLOW, Color.BLUE]
         self.assertTrue(compareEnumList(expectedColors, gameTest.colors))
 
-def compareEnumList(list1, list2):
-    print(f"LIST1 = {list1}")
-    print(f"LIST2 = {list2}")
+        gameTest = game.Game("TASK", availableList)
+        gameTest.checkLetters('AAAA')
+        expectedColors = [Color.BLUE, Color.RED, Color.BLUE, Color.BLUE]
+        self.assertTrue(compareEnumList(expectedColors, gameTest.colors))
 
+        gameTest = game.Game("TATA", availableList)
+        gameTest.checkLetters('AAAA')
+        expectedColors = [Color.BLUE, Color.RED, Color.BLUE, Color.RED]
+        self.assertTrue(compareEnumList(expectedColors, gameTest.colors))                  
+
+        gameTest = game.Game("TATA", availableList)
+        gameTest.checkLetters('AAAZ')
+        expectedColors = [Color.YELLOW, Color.RED, Color.BLUE, Color.BLUE]
+        self.assertTrue(compareEnumList(expectedColors, gameTest.colors)) 
+
+
+def compareEnumList(list1, list2):
     if len(list1) != len(list2):
         return False
     for i, enumValue1 in enumerate(list1):
         enumValue2 = list2[i]
         if enumValue2.value != enumValue1.value:
-            print(f"FALSE => e1  = {enumValue1}    e2 = {enumValue2}")
             return False
     return True
 

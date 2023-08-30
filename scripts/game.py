@@ -6,6 +6,7 @@ class Game :
         self.mysteryWord = mysteryWord
         self.mysteryWordDic = self.getDictionnary(mysteryWord)
         self.availableWordList = availableList
+        self.originNumberOccurence = self.getDicNumberOfOccurence(mysteryWord)
         self.live = 0
         self.input = None
         self.colors = []
@@ -30,27 +31,60 @@ class Game :
         if str not in self.availableWordList:
             raise Exception(f"Le mot '{str}' n'est pas dans le dictionnaire")
 
-            
- 
+    def getDicNumberOfOccurence(self, str):
+        dictionnary = {}
+        for letter in str:
+            if dictionnary.get(letter) != None:
+                dictionnary[letter] += 1
+            else:
+                 dictionnary[letter] = 1
+        return dictionnary
+
+
+    def isLetterIsPresent(self, letter):
+        if letter in self.mysteryWord:
+            return True
+        return False
+
+    def isLetterInRightPlace(self, letter, indice):
+        if self.mysteryWord[indice] == letter:
+            return True
+        return False
+    
+    def isDuplicate(self, letter, dictInputOccurence):
+        if self.originNumberOccurence[letter] != dictInputOccurence[letter]:
+            return True
+        return False
+
+
+    def updateOccurenceLeft(self, letter, dictio):
+        dictio[letter] = dictio[letter] -1
+        return dictio
+
+
     def checkLetters(self, str):
-        result = ""
-        self.input = self.getInputDictionnary(str)
         self.colors = []
-        for key, value in self.input.items():
-            if value in self.mysteryWordDic:
-                if key in self.mysteryWordDic[value]:
-                    result += value
+        dictInputOccurence = self.getDicNumberOfOccurence(str)
+        i = len(str) -1
+        while i >= 0:
+            letter = str[i]
+            if self.isLetterIsPresent(letter):
+                if self.isLetterInRightPlace(letter, i):
                     self.colors.append(asciiArt.Color.RED)
+                elif self.isDuplicate(letter, dictInputOccurence):
+                    dictInputOccurence = self.updateOccurenceLeft(letter, dictInputOccurence)
+
+                    self.colors.append(asciiArt.Color.BLUE)
                 else:
-                    result += value
                     self.colors.append(asciiArt.Color.YELLOW)
             else:
-                result += value                
                 self.colors.append(asciiArt.Color.BLUE)
-        self.ascii.painting(result, self.colors)
+            i -= 1
+        self.colors = self.colors[::-1]
+        self.ascii.painting(str, self.colors)
         if self.mysteryWord == str:
-                self.ascii.painting("YOU WIN", None)
-                sys.exit(0)
+            self.ascii.painting("YOU WIN", None)
+            sys.exit(0)
 
    
     def isWin(self, str):
@@ -71,6 +105,8 @@ class Game :
         return dictionnary
         
 
+
+
     def getDictionnary(self, word):
         # {'key = letter' : 'value = index'}
         dictionnary = {}
@@ -83,6 +119,8 @@ class Game :
 
     def gameLoop(self):
         print(f"{self.mysteryWord}")
+        for l in range(50):
+            print(".")
         self.checkLetters(self.wordIndice)
         while self.isGameOver() != True:
             input_text = input(f"Veuillez entrer un mot commençant par la lettre : {self.mysteryWord[0]} et faisant {len(self.mysteryWord)} lettres\n")
