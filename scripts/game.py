@@ -4,11 +4,9 @@ from scripts import asciiArt
 class Game :
     def __init__(self, mysteryWord, availableList) -> None:
         self.mysteryWord = mysteryWord
-        self.mysteryWordDic = self.getDictionnary(mysteryWord)
         self.availableWordList = availableList
         self.originNumberOccurence = self.getDicNumberOfOccurence(mysteryWord)
         self.live = 0
-        self.input = None
         self.colors = []
         self.ascii = asciiArt.AsciiArt()
         self.wordIndice = self.createWordIndice()
@@ -23,6 +21,7 @@ class Game :
                 tmp += '_'
         return tmp
 
+
     def checkRules(self, str):
         if str[0] != self.mysteryWord[0]:
             raise Exception(f"Le mot doit obligatoirement commencer par la lettre [{self.mysteryWord[0].capitalize()}]")
@@ -30,6 +29,7 @@ class Game :
             raise Exception(f"Le mot doit obligatoirement comporter [{len(self.mysteryWord)}] lettres")
         if str not in self.availableWordList:
             raise Exception(f"Le mot '{str}' n'est pas dans le dictionnaire")
+
 
     def getDicNumberOfOccurence(self, str):
         dictionnary = {}
@@ -46,11 +46,13 @@ class Game :
             return True
         return False
 
+
     def isLetterInRightPlace(self, letter, indice):
         if self.mysteryWord[indice] == letter:
             return True
         return False
     
+
     def isDuplicate(self, letter, dictInputOccurence):
         if self.originNumberOccurence[letter] != dictInputOccurence[letter]:
             return True
@@ -92,35 +94,14 @@ class Game :
             return True
         return False
 
+
     def isGameOver(self):
         if self.live == 6:
             return True
         return False
         
-    def getInputDictionnary(self, str):
-        # {'key = index' : 'value = letter'}
-        dictionnary = {}
-        for index, letter in enumerate(str):
-            dictionnary[index] = letter
-        return dictionnary
-        
-
-
-
-    def getDictionnary(self, word):
-        # {'key = letter' : 'value = index'}
-        dictionnary = {}
-        for index, letter in enumerate(word):
-            if letter in dictionnary:
-                dictionnary[letter].append(index)
-            else:
-                dictionnary[letter] = [index]
-        return dictionnary
 
     def gameLoop(self):
-        print(f"{self.mysteryWord}")
-        for l in range(50):
-            print(".")
         self.checkLetters(self.wordIndice)
         while self.isGameOver() != True:
             input_text = input(f"Veuillez entrer un mot commençant par la lettre : {self.mysteryWord[0]} et faisant {len(self.mysteryWord)} lettres\n")
@@ -137,5 +118,4 @@ class Game :
 
 
 if __name__ == '__main__':
-    game = Game("bonjour", None)
-    game.gameLoop()
+    """"""

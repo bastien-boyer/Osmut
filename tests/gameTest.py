@@ -42,19 +42,14 @@ class TestGameMethods(unittest.TestCase):
         expectedColors = [Color.RED, Color.YELLOW, Color.YELLOW, Color.YELLOW]
         self.assertTrue(compareEnumList(expectedColors, gameTest.colors))
         
-
-        gameTest = game.Game("TASK", availableList)
         gameTest.checkLetters('KAAS')
         expectedColors = [Color.YELLOW, Color.RED, Color.BLUE, Color.YELLOW]
         self.assertTrue(compareEnumList(expectedColors, gameTest.colors))
        
-
-        gameTest = game.Game("TASK", availableList)
         gameTest.checkLetters('TSAA')
         expectedColors = [Color.RED, Color.YELLOW, Color.YELLOW, Color.BLUE]
         self.assertTrue(compareEnumList(expectedColors, gameTest.colors))
 
-        gameTest = game.Game("TASK", availableList)
         gameTest.checkLetters('AAAA')
         expectedColors = [Color.BLUE, Color.RED, Color.BLUE, Color.BLUE]
         self.assertTrue(compareEnumList(expectedColors, gameTest.colors))

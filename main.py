@@ -4,8 +4,6 @@ FILE_LIST = "./filesReference/wordReferences.txt"
 
 def main():   
     words = chooseWord.ChooseWords(chooseWord.selectWord(FILE_LIST, chooseWord.generate_random_with_datetime()), FILE_LIST)
-    #words = chooseWord.ChooseWords("BONJOUR", FILE_LIST)
-
     game.Game(words.chosenWord, words.availableList).gameLoop()
     
 
