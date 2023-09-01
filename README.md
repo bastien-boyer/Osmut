@@ -15,5 +15,5 @@ The letters in blue are not in the word.
 Run tests : python3 run_tests.py  
 Run game : python3 main.py
 
-
-!(personalMotus.png)
+ScreenShot  
+![gameScreenShot](personalMotus.png)
