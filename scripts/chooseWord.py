@@ -9,22 +9,24 @@ class ChooseWords:
     def __init__(self, word, wordReferenceList):
         self.chosenWord = word.upper()
         self.size = len(word)
-        self.availableList = self.getAvailableList(self.chosenWord[0], self.size, wordReferenceList)
+        self.availableList = self.getAvailableList(
+            self.chosenWord[0], self.size, wordReferenceList
+        )
 
-    
     def getAvailableList(self, letter, size, wordReferenceList):
         availableList = []
-        with open(wordReferenceList , "r") as liste: 
+        with open(wordReferenceList, "r") as liste:
             for word in liste:
                 if word[0] == letter and len(word.strip()) == size:
                     availableList.append(word.strip())
         return availableList
-                        
 
 
 def generate_random_with_datetime():
     current_datetime = datetime.datetime.now()
-    timestamp = current_datetime.timestamp()  # Convertit le datetime en un nombre flottant
+    timestamp = (
+        current_datetime.timestamp()
+    )  # Convertit le datetime en un nombre flottant
     seed = int(timestamp * 1000000)  # Convertit le flottant en un entier
 
     random.seed(seed)  # Utilise l'entier comme graine
@@ -43,5 +45,5 @@ def selectWord(wordReferenceList, random):
             return item.rstrip("\n")
 
 
-if __name__ == '__main__':
-   """"""
+if __name__ == "__main__":
+    """"""

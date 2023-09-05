@@ -1,5 +1,5 @@
-
 from enum import Enum
+
 
 class Color(Enum):
     RED = 1
@@ -10,18 +10,19 @@ class Color(Enum):
 
 ALPHA_REF = "./filesReference/asciiArtReference.txt"
 
-class AsciiArt():
+
+class AsciiArt:
     def __init__(self) -> None:
         self.alpha_map = self.populate_alpha_map()
         self.width = 20
         self.height = 11
         self.letters = self.getAsciiLetters()
-    
+
     def populate_alpha_map(self):
         alpha_map = {}
-        for i, c in enumerate(range(ord('A'), ord('Z') + 1)):
+        for i, c in enumerate(range(ord("A"), ord("Z") + 1)):
             alpha_map[chr(c)] = i
-        alpha_map['_'] = 26
+        alpha_map["_"] = 26
         return alpha_map
 
     def getAsciiLetters(self):
@@ -35,7 +36,7 @@ class AsciiArt():
     def painting(self, text, colors):
         """
         Each letter has a height and a width
-        Each iteration print an entire line 
+        Each iteration print an entire line
         """
 
         tmp = ""
@@ -44,15 +45,16 @@ class AsciiArt():
             c = 0
             for char in text:
                 if self.alpha_map.get(char) is None:
-                    start = self.alpha_map.get('_') * self.width
+                    start = self.alpha_map.get("_") * self.width
                 else:
                     start = self.alpha_map.get(char) * self.width
                 end = start + self.width
-                tmp += self.create_art(self.letters, start, end, h, colors[c] if colors else Color.GREEN)
+                tmp += self.create_art(
+                    self.letters, start, end, h, colors[c] if colors else Color.GREEN
+                )
                 c += 1
             print(tmp)
             tmp = ""
-
 
     def create_art(self, letter, start, end, height, color):
         tmp = ""
@@ -63,10 +65,9 @@ class AsciiArt():
                 tmp += self.goodLetterButWrongEmplacement(letter[height][i])
             elif color == Color.BLUE:
                 tmp += self.badLetter(letter[height][i])
-            else :
+            else:
                 tmp += self.print_endGame(letter[height][i])
         return tmp
-
 
     def print_endGame(self, letter):
         # GREEN
@@ -83,6 +84,7 @@ class AsciiArt():
     def goodLetterInRightEmplacement(self, letter):
         # RED
         return "\033[31m" + letter + "\033[0m"
+
 
 if __name__ == "__main__":
     """"""
