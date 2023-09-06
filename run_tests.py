@@ -1,9 +1,9 @@
 import unittest
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Découvrez et chargez automatiquement tous les tests
     test_loader = unittest.TestLoader()
-    test_suite = test_loader.discover('tests', pattern='*.py')
+    test_suite = test_loader.discover("tests", pattern="*.py")
 
     # Exécutez les tests
     test_runner = unittest.TextTestRunner()

@@ -11,12 +11,13 @@ class WordReference:
         tmp = open(fileList, "r")
         wordReferenceTxt = open("./wordReferences.txt", "w")
 
-        for word  in tmp:
-            wordSize = len(word.strip()) 
+        for word in tmp:
+            wordSize = len(word.strip())
             if wordSize >= 6 and wordSize <= 9:
                 wordReferenceTxt.write(word)
         tmp.close()
         wordReferenceTxt.close()
-        
-if __name__ == '__main__':
+
+
+if __name__ == "__main__":
     word = WordReference()
