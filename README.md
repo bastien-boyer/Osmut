@@ -1,19 +1,28 @@
 # Osmut
 
-Personnal Motus
+**:star2: Personnal Motus :star2:**
 
-RULES :  
-You have six attempts to guess the word, which is between 6 and 9 letters long and is common to all players.  
-You can only propose words that start with the same letter as the target word and are found in our dictionary.  
-Proper nouns are not accepted.
+## Rules
 
-The letters in red are correctly placed,
-the letters in yellow are misplaced (but present in the word).
-The letters in blue are not in the word.
+Guess the mystery word ! :checkered_flag:
 
+* 6 attempts
+* 6 to 9 letters long word
+* no proper nouns
 
-Run tests : python3 run_tests.py  
-Run game : python3 main.py
+Each letters of the word can be :
 
-ScreenShot  
-![gameScreenShot](personalMotus.png)
+| state         | description
+|---------------|------------------|
+|:red_square:   | correctly placed |
+|:yellow_square:| misplaced        |
+|:blue_square:  | not in the word  |
+
+## How to play
+
+Run tests : ```python3 run_tests.py```  
+Run game : ```python3 main.py```
+
+## Example
+
+![gameScreenShot](imgs/personalMotus.png)
